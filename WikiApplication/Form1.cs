@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace WikiApplication
 {
-    public partial class Form1 : Form
+    public partial class wikiApplication : Form
     {
-        public Form1()
+        public wikiApplication()
         {
             InitializeComponent();
         }

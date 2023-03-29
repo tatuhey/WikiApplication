@@ -44,13 +44,13 @@
             this.dataListView = new System.Windows.Forms.ListView();
             this.dataName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.dataCategory = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.groupBox = new System.Windows.Forms.GroupBox();
-            this.radBtnLinear = new System.Windows.Forms.RadioButton();
+            this.cbCategory = new System.Windows.Forms.ComboBox();
+            this.gbStructure = new System.Windows.Forms.GroupBox();
             this.radBtnNonlinear = new System.Windows.Forms.RadioButton();
+            this.radBtnLinear = new System.Windows.Forms.RadioButton();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.stStripLabel = new System.Windows.Forms.ToolStripStatusLabel();
-            this.groupBox.SuspendLayout();
+            this.gbStructure.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -126,6 +126,7 @@
             this.buttonAdd.TabIndex = 28;
             this.buttonAdd.Text = "Add";
             this.buttonAdd.UseVisualStyleBackColor = true;
+            this.buttonAdd.Click += new System.EventHandler(this.buttonAdd_Click);
             // 
             // labelDefinition
             // 
@@ -195,36 +196,25 @@
             this.dataCategory.Text = "Category";
             this.dataCategory.Width = 81;
             // 
-            // comboBox1
+            // cbCategory
             // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(16, 133);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(348, 21);
-            this.comboBox1.TabIndex = 37;
+            this.cbCategory.FormattingEnabled = true;
+            this.cbCategory.Location = new System.Drawing.Point(16, 133);
+            this.cbCategory.Name = "cbCategory";
+            this.cbCategory.Size = new System.Drawing.Size(348, 21);
+            this.cbCategory.TabIndex = 37;
             // 
-            // groupBox
+            // gbStructure
             // 
-            this.groupBox.Controls.Add(this.radBtnNonlinear);
-            this.groupBox.Controls.Add(this.radBtnLinear);
-            this.groupBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox.Location = new System.Drawing.Point(16, 160);
-            this.groupBox.Name = "groupBox";
-            this.groupBox.Size = new System.Drawing.Size(348, 71);
-            this.groupBox.TabIndex = 38;
-            this.groupBox.TabStop = false;
-            this.groupBox.Text = "Structure";
-            // 
-            // radBtnLinear
-            // 
-            this.radBtnLinear.AutoSize = true;
-            this.radBtnLinear.Location = new System.Drawing.Point(6, 34);
-            this.radBtnLinear.Name = "radBtnLinear";
-            this.radBtnLinear.Size = new System.Drawing.Size(71, 24);
-            this.radBtnLinear.TabIndex = 0;
-            this.radBtnLinear.TabStop = true;
-            this.radBtnLinear.Text = "Linear";
-            this.radBtnLinear.UseVisualStyleBackColor = true;
+            this.gbStructure.Controls.Add(this.radBtnNonlinear);
+            this.gbStructure.Controls.Add(this.radBtnLinear);
+            this.gbStructure.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.gbStructure.Location = new System.Drawing.Point(16, 160);
+            this.gbStructure.Name = "gbStructure";
+            this.gbStructure.Size = new System.Drawing.Size(348, 71);
+            this.gbStructure.TabIndex = 38;
+            this.gbStructure.TabStop = false;
+            this.gbStructure.Text = "Structure";
             // 
             // radBtnNonlinear
             // 
@@ -236,6 +226,17 @@
             this.radBtnNonlinear.TabStop = true;
             this.radBtnNonlinear.Text = "Non-Linear";
             this.radBtnNonlinear.UseVisualStyleBackColor = true;
+            // 
+            // radBtnLinear
+            // 
+            this.radBtnLinear.AutoSize = true;
+            this.radBtnLinear.Location = new System.Drawing.Point(6, 34);
+            this.radBtnLinear.Name = "radBtnLinear";
+            this.radBtnLinear.Size = new System.Drawing.Size(71, 24);
+            this.radBtnLinear.TabIndex = 0;
+            this.radBtnLinear.TabStop = true;
+            this.radBtnLinear.Text = "Linear";
+            this.radBtnLinear.UseVisualStyleBackColor = true;
             // 
             // statusStrip
             // 
@@ -259,8 +260,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(806, 450);
             this.Controls.Add(this.statusStrip);
-            this.Controls.Add(this.groupBox);
-            this.Controls.Add(this.comboBox1);
+            this.Controls.Add(this.gbStructure);
+            this.Controls.Add(this.cbCategory);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.textSearch);
             this.Controls.Add(this.buttonSearch);
@@ -277,8 +278,8 @@
             this.Controls.Add(this.dataListView);
             this.Name = "wikiApplication";
             this.Text = "Wiki Application";
-            this.groupBox.ResumeLayout(false);
-            this.groupBox.PerformLayout();
+            this.gbStructure.ResumeLayout(false);
+            this.gbStructure.PerformLayout();
             this.statusStrip.ResumeLayout(false);
             this.statusStrip.PerformLayout();
             this.ResumeLayout(false);
@@ -304,8 +305,8 @@
         private System.Windows.Forms.ListView dataListView;
         private System.Windows.Forms.ColumnHeader dataName;
         private System.Windows.Forms.ColumnHeader dataCategory;
-        private System.Windows.Forms.ComboBox comboBox1;
-        private System.Windows.Forms.GroupBox groupBox;
+        private System.Windows.Forms.ComboBox cbCategory;
+        private System.Windows.Forms.GroupBox gbStructure;
         private System.Windows.Forms.RadioButton radBtnNonlinear;
         private System.Windows.Forms.RadioButton radBtnLinear;
         private System.Windows.Forms.StatusStrip statusStrip;

@@ -23,20 +23,28 @@ namespace WikiApplication
         // 6.2 Create a global List<T> of type Information called Wiki.
         List<Information> Wiki = new List<Information>();
 
-
         #region Buttons
         // 6.3 Create a button method to ADD a new item to the list. Use a TextBox for the Name input, ComboBox for 
         // the Category, Radio group for the Structure and Multiline TextBox for the Definition.
         private void buttonAdd_Click(object sender, EventArgs e)
         {
-            Information newInformation = new Information();
-            newInformation.setName(textName.Text);
-            newInformation.setCategory(cbCategory.SelectedIndex);
-            newInformation.setStructure(gbStructure.Text);
-            newInformation.setDefinition(textDefinition.Text);
-            Wiki.Add(newInformation);
+            bool valid = validName(textName.Text);
+            if (valid)
+            {
+                Information newInformation = new Information();
+                newInformation.setName(textName.Text);
+                newInformation.setCategory(cbCategory.SelectedIndex);
+                newInformation.setStructure(gbStructure.Text);
+                newInformation.setDefinition(textDefinition.Text);
+                Wiki.Add(newInformation);
+            }
+            else
+            {
+                MessageBox.Show("repeat");
+            }
             clearEntries();
             displayInformation();
+            textName.Focus();
         }
 
         #endregion
@@ -70,17 +78,53 @@ namespace WikiApplication
                 cbCategory.Items.Add(categoryItem);
             }
         }
-        #endregion
-
-
 
         // 6.5 Create a custom ValidName method which will take a parameter string value from the Textbox Name 
         // and returns a Boolean after checking for duplicates. Use the built in List<T> method “Exists” to answer this requirement.
-
+        private bool validName(string name)
+        {
+            if (Wiki.Exists(dup => dup.getName() == name))
+                return false;
+            else
+                return true;
+        }
 
         // 6.6 Create two methods to highlight and return the values from the Radio button GroupBox.
         // The first method must return a string value from the selected radio button (Linear or Non-Linear).
         // The second method must send an integer index which will highlight an appropriate radio button.
+        private string radioButtonString(GroupBox groupBox)
+        {
+            foreach (RadioButton radio in groupBox.Controls.OfType<RadioButton>())
+            {
+                if (radBtnLinear.Checked || radBtnNonlinear.Checked)
+                {
+                    return radio.ToString();
+                }
+            }
+
+            return null;
+        }
+
+        private bool radioButtonHighlight(GroupBox groupBox, int index)
+        {
+            if (index < 0 || index >= groupBox.Controls.Count)
+            {
+                return false;
+            }
+
+            RadioButton radioButton = groupBox.Controls.OfType<RadioButton>().ElementAt(index);
+            radioButton.Checked = true;
+
+            return true;
+        }
+        #endregion
+
+
+
+
+
+
+
 
 
         // 6.7 Create a button method that will delete the currently selected record in the ListView. Ensure the user 

@@ -18,8 +18,6 @@ namespace WikiApplication
         private string structure;
         private string definition;
 
-        
-
         public Information() { }
 
         public Information(string newName, string newCategory, string newStructure, string newDefinition)

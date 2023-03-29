@@ -20,6 +20,8 @@ namespace WikiApplication
 
         }
 
+        int selectedlvcount = -1;
+
         // 6.2 Create a global List<T> of type Information called Wiki.
         List<Information> Wiki = new List<Information>();
 
@@ -45,6 +47,25 @@ namespace WikiApplication
             clearEntries();
             displayInformation();
             textName.Focus();
+        }
+
+        private void buttonDelete_Click(object sender, EventArgs e)
+        {
+            if (selectedlvcount > -1)
+            {
+                DialogResult result = MessageBox.Show("Do you want to delete the selected entry?", "Delete", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                if (result == DialogResult.Yes)
+                {
+                    delete(selectedlvcount);
+
+                }
+                else
+                {
+                    clearEntries();
+                    selectedlvcount = -1;
+                }
+
+            }
         }
 
         #endregion
@@ -92,6 +113,8 @@ namespace WikiApplication
         // 6.6 Create two methods to highlight and return the values from the Radio button GroupBox.
         // The first method must return a string value from the selected radio button (Linear or Non-Linear).
         // The second method must send an integer index which will highlight an appropriate radio button.
+
+        // still needs fixing
         private string radioButtonString(GroupBox groupBox)
         {
             foreach (RadioButton radio in groupBox.Controls.OfType<RadioButton>())
@@ -117,6 +140,19 @@ namespace WikiApplication
 
             return true;
         }
+
+        // 6.7 Create a button method that will delete the currently selected record in the ListView. Ensure the user 
+        // has the option to backout of this action by using a dialog box. Display an updated version of the sorted list at the end of this process.
+        private void delete(int row)
+        {
+            foreach (int column in dataListView.Columns)
+            {
+                Wiki.RemoveAt(row);
+            }
+        }
+
+
+
         #endregion
 
 
@@ -127,8 +163,7 @@ namespace WikiApplication
 
 
 
-        // 6.7 Create a button method that will delete the currently selected record in the ListView. Ensure the user 
-        // has the option to backout of this action by using a dialog box. Display an updated version of the sorted list at the end of this process.
+
 
 
         // 6.8 Create a button method that will save the edited record of the currently selected item in the ListView.

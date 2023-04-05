@@ -64,12 +64,8 @@ namespace WikiApplication
                 if (result == DialogResult.Yes)
                 {
                     delete(selectedlvcount);
-                }
-                else
-                {
-                    selectedlvcount = -1;
-                }
-
+                }                               
+                selectedlvcount = -1;                
             }
             clearEntries();
         }
@@ -77,23 +73,6 @@ namespace WikiApplication
         #endregion
 
         #region Methods
-        private void clearEntries()
-        {
-            textName.Clear();
-            cbCategory.Text = string.Empty;
-            gbStructure.DataBindings.Clear();
-            textDefinition.Clear();
-        }
-
-        private void displayInformation()
-        {
-            dataListView.Items.Clear();
-            foreach (var item in Wiki)
-            {
-                dataListView.Items.Add(new ListViewItem(new[] { item.getName(), item.getCategory(), item.getStructure(), item.getDefinition() }));
-            }
-        }
-
         // 6.4 Create a custom method to populate the ComboBox when the Form Load method is called. The six categories must be read from a simple text file.
         private void fillComboBox()
         {
@@ -110,7 +89,7 @@ namespace WikiApplication
         // and returns a Boolean after checking for duplicates. Use the built in List<T> method “Exists” to answer this requirement.
         private bool validName(string name)
         {
-            if (string.IsNullOrEmpty(name))
+            if (!string.IsNullOrEmpty(name))
             {
                 if (Wiki.Exists(dup => dup.getName() == name))
                     return false;
@@ -133,12 +112,14 @@ namespace WikiApplication
             {
                 if (radio.Checked)
                 {
-                    return radio.Text;
+                    return radio.Text;                    
                 }
             }
 
             return null;
         }
+
+        // Be advised that this function utilises text of the radiobutton instead of index value
         private bool radioButtonHighlight(GroupBox groupBox, string value)
         {
             foreach (RadioButton radio in groupBox.Controls.OfType<RadioButton>())
@@ -160,12 +141,15 @@ namespace WikiApplication
         //        return false;
         //    }
 
-        //    RadioButton radioButton = groupBox.Controls.OfType<RadioButton>().ElementAt(index);
-        //    radioButton.Checked = true;
+        //    else
+        //    {
+        //        RadioButton radioButton = groupBox.Controls.OfType<RadioButton>().ElementAt(index);
+        //        radioButton.Checked = true;
 
-        //    return true;
+        //        return true;
+        //    }
+
         //}
-
 
         // 6.7 Create a button method that will delete the currently selected record in the ListView. Ensure the user 
         // has the option to backout of this action by using a dialog box. Display an updated version of the sorted list at the end of this process.
@@ -181,27 +165,47 @@ namespace WikiApplication
             e.Handled = true;
         }
 
+        // 6.8 Create a button method that will save the edited record of the currently selected item in the ListView.
+        // All the changes in the input controls will be written back to the list.
+        // Display an updated version of the sorted list at the end of this process.
+
+        //still only edit name and probably definition
+        private void buttonEdit_Click(object sender, EventArgs e)
+        {
+            if (selectedlvcount > -1)
+            {
+                bool valid = validName(textName.Text);
+                if (valid)
+                {
+                    Information editItem = Wiki[selectedlvcount];
+                    editItem.setName(textName.Text);
+                    editItem.setDefinition(textDefinition.Text);
+                    editItem.setCategory(cbCategory.Text);
+
+                    editItem.setStructure(radioButtonString(gbStructure).ToString());
+
+                    displayInformation();
+                }
+            }
+            else
+                MessageBox.Show("Cannot edit unselected list");
+        }
 
         #endregion
 
 
 
 
-
-
-
-
-
-
-
-
-        // 6.8 Create a button method that will save the edited record of the currently selected item in the ListView.
-        // All the changes in the input controls will be written back to the list.
-        // Display an updated version of the sorted list at the end of this process.
-
-
         // 6.9 Create a single custom method that will sort and then display the Name and Category from the wiki information in the list.
-
+        private void displayInformation()
+        {
+            Wiki.Sort();
+            dataListView.Items.Clear();
+            foreach (var item in Wiki)
+            {
+                dataListView.Items.Add(new ListViewItem(new[] { item.getName(), item.getCategory(), item.getStructure(), item.getDefinition() }));
+            }
+        }
 
         // 6.10 Create a button method that will use the builtin binary search to find a Data Structure name. 
         // If the record is found the associated details will populate the appropriate input controls and highlight the name in the ListView.
@@ -226,7 +230,12 @@ namespace WikiApplication
                 cbCategory.Text = categorywhenselect;
 
                 string structurewhenselect = item.getStructure();
+                // Use this if passing string
                 radioButtonHighlight(gbStructure, structurewhenselect);
+                // Use this if passing int
+                //int structureInt;
+                //int.TryParse(structurewhenselect, out structureInt);
+                //radioButtonHighlight(gbStructure, structureInt);
                 
             }
             else
@@ -235,12 +244,21 @@ namespace WikiApplication
             }
         }
 
-
-
-
-
         // 6.12 Create a custom method that will clear and reset the TextBoxes, ComboBox and Radio button.
+        private void clearEntries()
+        {
+            textName.Clear();
+            cbCategory.Text = string.Empty;
+            textDefinition.Clear();
 
+            foreach (Control control in gbStructure.Controls)
+            {
+                if (control is RadioButton radioButton)
+                {
+                    radioButton.Checked = false;
+                }
+            }
+        }
 
         // 6.13 Create a double click event on the Name TextBox to clear the TextBboxes, ComboBox and Radio button.
 

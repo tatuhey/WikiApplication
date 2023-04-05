@@ -38,9 +38,9 @@ namespace WikiApplication
             return name;
         }
 
-        public void setCategory(int newCategory)
+        public void setCategory(string newCategory)
         {
-            category = newCategory.ToString();          
+            category = newCategory;          
         }
 
         public string getCategory()

@@ -38,7 +38,7 @@ namespace WikiApplication
 
                 newInformation.setName(textName.Text);
 
-                newInformation.setCategory(cbCategory.SelectedIndex);
+                newInformation.setCategory(cbCategory.SelectedItem.ToString());
 
                 string structureValue = radioButtonString(gbStructure);
                 newInformation.setStructure(structureValue);
@@ -64,7 +64,7 @@ namespace WikiApplication
                 if (result == DialogResult.Yes)
                 {
                     delete(selectedlvcount);
-
+                    clearEntries();
                 }
                 else
                 {
@@ -218,9 +218,7 @@ namespace WikiApplication
                 textDefinition.Text = definitionwhenselect;
 
                 string categorywhenselect = item.getCategory();
-                int categoryInt = int.Parse(categorywhenselect);
-                cbCategory.SelectedIndex = categoryInt;
-                cbCategory.Update();
+                cbCategory.Text = categorywhenselect;
 
                 string structurewhenselect = item.getStructure();
                 radioButtonHighlight(gbStructure, structurewhenselect);

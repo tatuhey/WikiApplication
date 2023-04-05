@@ -50,6 +50,8 @@
             this.radBtnLinear = new System.Windows.Forms.RadioButton();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.stStripLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.saveFD = new System.Windows.Forms.SaveFileDialog();
+            this.openFD = new System.Windows.Forms.OpenFileDialog();
             this.gbStructure.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.SuspendLayout();
@@ -72,6 +74,7 @@
             this.textSearch.Size = new System.Drawing.Size(179, 20);
             this.textSearch.TabIndex = 35;
             this.textSearch.Text = "Search by name";
+            this.textSearch.MouseClick += new System.Windows.Forms.MouseEventHandler(this.textSearch_MouseClick);
             // 
             // buttonSearch
             // 
@@ -91,6 +94,7 @@
             this.buttonSave.TabIndex = 32;
             this.buttonSave.Text = "Save";
             this.buttonSave.UseVisualStyleBackColor = true;
+            this.buttonSave.Click += new System.EventHandler(this.buttonSave_Click);
             // 
             // buttonLoad
             // 
@@ -100,6 +104,7 @@
             this.buttonLoad.TabIndex = 31;
             this.buttonLoad.Text = "Load";
             this.buttonLoad.UseVisualStyleBackColor = true;
+            this.buttonLoad.Click += new System.EventHandler(this.buttonLoad_Click);
             // 
             // buttonDelete
             // 
@@ -175,6 +180,7 @@
             this.textName.Name = "textName";
             this.textName.Size = new System.Drawing.Size(348, 20);
             this.textName.TabIndex = 20;
+            this.textName.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.textName_MouseDoubleClick);
             // 
             // dataListView
             // 
@@ -259,6 +265,10 @@
             this.stStripLabel.Size = new System.Drawing.Size(77, 17);
             this.stStripLabel.Text = "STATUS STRIP";
             // 
+            // openFD
+            // 
+            this.openFD.FileName = "openFileDialog1";
+            // 
             // wikiApplication
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -316,6 +326,8 @@
         private System.Windows.Forms.RadioButton radBtnLinear;
         private System.Windows.Forms.StatusStrip statusStrip;
         private System.Windows.Forms.ToolStripStatusLabel stStripLabel;
+        private System.Windows.Forms.SaveFileDialog saveFD;
+        private System.Windows.Forms.OpenFileDialog openFD;
     }
 }
 

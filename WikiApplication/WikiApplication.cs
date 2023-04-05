@@ -18,7 +18,6 @@ namespace WikiApplication
         {
             InitializeComponent();
             fillComboBox();
-
         }
 
         int selectedlvcount = -1;
@@ -26,53 +25,25 @@ namespace WikiApplication
         // 6.2 Create a global List<T> of type Information called Wiki.
         List<Information> Wiki = new List<Information>();
 
-        #region Buttons
+        #region Methods
         // 6.3 Create a button method to ADD a new item to the list. Use a TextBox for the Name input, ComboBox for 
         // the Category, Radio group for the Structure and Multiline TextBox for the Definition.
-        private void buttonAdd_Click(object sender, EventArgs e)
+        private void add()
         {
-            bool valid = validName(textName.Text);
-            if (valid)
-            {
-                Information newInformation = new Information();
+            Information newInformation = new Information();
 
-                newInformation.setName(textName.Text);
+            newInformation.setName(textName.Text);
 
-                newInformation.setCategory(cbCategory.SelectedItem.ToString());
+            newInformation.setCategory(cbCategory.SelectedItem.ToString());
 
-                string structureValue = radioButtonString(gbStructure);
-                newInformation.setStructure(structureValue);
+            string structureValue = radioButtonString(gbStructure);
+            newInformation.setStructure(structureValue);
 
-                newInformation.setDefinition(textDefinition.Text);
+            newInformation.setDefinition(textDefinition.Text);
 
-                Wiki.Add(newInformation);
-            }
-            else
-            {
-                MessageBox.Show("repeat");
-            }
-            clearEntries();
-            displayInformation();
-            textName.Focus();
+            Wiki.Add(newInformation);
         }
 
-        private void buttonDelete_Click(object sender, EventArgs e)
-        {
-            if (selectedlvcount > -1)
-            {
-                DialogResult result = MessageBox.Show("Do you want to delete the selected entry?", "Delete", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-                if (result == DialogResult.Yes)
-                {
-                    delete(selectedlvcount);
-                }                               
-                selectedlvcount = -1;                
-            }
-            clearEntries();
-        }
-
-        #endregion
-
-        #region Methods
         // 6.4 Create a custom method to populate the ComboBox when the Form Load method is called. The six categories must be read from a simple text file.
         private void fillComboBox()
         {
@@ -104,15 +75,13 @@ namespace WikiApplication
         // 6.6 Create two methods to highlight and return the values from the Radio button GroupBox.
         // The first method must return a string value from the selected radio button (Linear or Non-Linear).
         // The second method must send an integer index which will highlight an appropriate radio button.
-
-        // still needs fixing
         private string radioButtonString(GroupBox groupBox)
         {
             foreach (RadioButton radio in groupBox.Controls.OfType<RadioButton>())
             {
                 if (radio.Checked)
                 {
-                    return radio.Text;                    
+                    return radio.Text;
                 }
             }
 
@@ -159,42 +128,24 @@ namespace WikiApplication
             dataListView.Items.RemoveAt(row);
         }
 
-        // prevent keypress in combobox
-        private void cbCategory_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            e.Handled = true;
-        }
-
         // 6.8 Create a button method that will save the edited record of the currently selected item in the ListView.
         // All the changes in the input controls will be written back to the list.
         // Display an updated version of the sorted list at the end of this process.
-
-        //still only edit name and probably definition
-        private void buttonEdit_Click(object sender, EventArgs e)
+        private void edit()
         {
-            if (selectedlvcount > -1)
+            bool valid = validName(textName.Text);
+            if (valid)
             {
-                bool valid = validName(textName.Text);
-                if (valid)
-                {
-                    Information editItem = Wiki[selectedlvcount];
-                    editItem.setName(textName.Text);
-                    editItem.setDefinition(textDefinition.Text);
-                    editItem.setCategory(cbCategory.Text);
+                Information editItem = Wiki[selectedlvcount];
+                editItem.setName(textName.Text);
+                editItem.setDefinition(textDefinition.Text);
+                editItem.setCategory(cbCategory.Text);
 
-                    editItem.setStructure(radioButtonString(gbStructure).ToString());
+                editItem.setStructure(radioButtonString(gbStructure).ToString());
 
-                    displayInformation();
-                }
+                displayInformation();
             }
-            else
-                MessageBox.Show("Cannot edit unselected list");
         }
-
-        #endregion
-
-
-
 
         // 6.9 Create a single custom method that will sort and then display the Name and Category from the wiki information in the list.
         private void displayInformation()
@@ -210,54 +161,32 @@ namespace WikiApplication
         // 6.10 Create a button method that will use the builtin binary search to find a Data Structure name. 
         // If the record is found the associated details will populate the appropriate input controls and highlight the name in the ListView.
         // At the end of the search process the search input TextBox must be cleared.
-
-        private void buttonSearch_Click(object sender, EventArgs e)
+        private void search(int index)
         {
-            string searchName = textSearch.Text;
+            Information search = Wiki[index];
+            dataListView.Items[index].Selected = true;
+            dataListView.Select();
 
-            int index = Wiki.BinarySearch(new Information(searchName, "", "", ""));
-
-            if (index >= 0)
-            {
-                Information search = Wiki[index];
-                dataListView.Items[index].Selected = true;
-                dataListView.Select();
-
-                textName.Text = search.getName();
-                cbCategory.Text = search.getCategory();
-                textDefinition.Text = search.getDefinition();
-                radioButtonHighlight(gbStructure, search.getStructure());
-
-            }
-            textSearch.Text = string.Empty;
-            
+            textName.Text = search.getName();
+            cbCategory.Text = search.getCategory();
+            textDefinition.Text = search.getDefinition();
+            radioButtonHighlight(gbStructure, search.getStructure());
         }
-
 
         // 6.11 Create a ListView event so a user can select a Data Structure Name from the list of Names and the 
         // associated information will be displayed in the related text boxes combo box and radio button.
-
-        private void dataListView_MouseClick(object sender, MouseEventArgs e)
+        private void displayOnComponents()
         {
-            selectedlvcount = dataListView.SelectedIndices[0];
-            if (selectedlvcount > -1)
-            {
-                Information item = Wiki[selectedlvcount];
-                textName.Text = item.getName();
-                textDefinition.Text = item.getDefinition();
-                cbCategory.Text= item.getCategory();
-                // Use this if passing string
-                radioButtonHighlight(gbStructure, item.getStructure());
-                // Use this if passing int
-                //int structureInt;
-                //int.TryParse(structurewhenselect, out structureInt);
-                //radioButtonHighlight(gbStructure, structureInt);
-                
-            }
-            else
-            {
-                MessageBox.Show("Error when selecting data from the listview");
-            }
+            Information item = Wiki[selectedlvcount];
+            textName.Text = item.getName();
+            textDefinition.Text = item.getDefinition();
+            cbCategory.Text = item.getCategory();
+            // Use this if passing string
+            radioButtonHighlight(gbStructure, item.getStructure());
+            // Use this if passing int
+            //int structureInt;
+            //int.TryParse(structurewhenselect, out structureInt);
+            //radioButtonHighlight(gbStructure, structureInt);
         }
 
         // 6.12 Create a custom method that will clear and reset the TextBoxes, ComboBox and Radio button.
@@ -275,18 +204,169 @@ namespace WikiApplication
                 }
             }
         }
+        #endregion
 
+        #region Buttons
 
+        private void buttonAdd_Click(object sender, EventArgs e)
+        {
+            bool valid = validName(textName.Text);
+            if (valid)
+            {
+                add();
+            }
+            else
+            {
+                MessageBox.Show("repeat");
+            }
+            clearEntries();
+            displayInformation();
+            textName.Focus();
+        }
 
-        // 6.13 Create a double click event on the Name TextBox to clear the TextBboxes, ComboBox and Radio button.
+        private void buttonDelete_Click(object sender, EventArgs e)
+        {
+            if (selectedlvcount > -1)
+            {
+                DialogResult result = MessageBox.Show("Do you want to delete the selected entry?", "Delete", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                if (result == DialogResult.Yes)
+                {
+                    delete(selectedlvcount);
+                }                               
+                selectedlvcount = -1;                
+            }
+            clearEntries();
+        }
 
+        private void buttonEdit_Click(object sender, EventArgs e)
+        {
+            if (selectedlvcount > -1)
+            {
+                edit();
+            }
+            else
+                MessageBox.Show("Cannot edit unselected list");
+        }
+
+        private void buttonSearch_Click(object sender, EventArgs e)
+        {
+            string searchName = textSearch.Text;
+
+            int index = Wiki.BinarySearch(new Information(searchName, "", "", ""));
+
+            if (index >= 0)
+            {
+                search(index);
+            }
+            textSearch.Text = string.Empty;
+        }
 
         // 6.14 Create two buttons for the manual open and save option; this must use a dialog box to select a file or 
         // rename a saved file. All Wiki data is stored/retrieved using a binary reader/writer file format.
+        private void buttonLoad_Click(object sender, EventArgs e)
+        {
+            string defaultDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            openFD.InitialDirectory = defaultDirectory;
+            openFD.FileName = "definitions.dat";
+            if (openFD.ShowDialog() == DialogResult.OK)
+            {
+                BinaryReader br;
+                int index = 0;
+                dataListView.Items.Clear();
+                try
+                {
+                    br = new BinaryReader(new FileStream(openFD.FileName, FileMode.Open));
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message + "\nCannot open file for reading");
+                    return;
+                }
+                while (br.BaseStream.Position != br.BaseStream.Length)
+                {
+                    string name = br.ReadString();
+                    string category = br.ReadString();
+                    string structure = br.ReadString();
+                    string definition = br.ReadString();
+                    Information open = new Information(name, category, structure, definition);
+                    Wiki.Add(open);
+                    index++;
+                }
+                br.Close();
+                displayInformation();
+            }
+        }
 
+        private void buttonSave_Click(object sender, EventArgs e)
+        {
+            string defaultDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            saveFD.InitialDirectory = defaultDirectory;
+            saveFD.FileName = "definitions.dat";
+            if (saveFD.ShowDialog() == DialogResult.OK)
+            {
+                BinaryWriter bw;
+                try
+                {
+                    bw = new BinaryWriter(new FileStream("definitions.dat", FileMode.Create));
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message + "\nCannot save to file");
+                    return;
+                }
+                try
+                {
+                    foreach (var save in Wiki)
+                    {
+                        bw.Write(save.getName());
+                        bw.Write(save.getCategory());
+                        bw.Write(save.getStructure());
+                        bw.Write(save.getDefinition());
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message + "\nCannot write to file");
+                }
+                bw.Close();
+            }
+        }
+        #endregion
+
+        #region Mouseclick
+        // prevent keypress in combobox
+        private void cbCategory_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = true;
+        }
+
+        private void dataListView_MouseClick(object sender, MouseEventArgs e)
+        {
+            selectedlvcount = dataListView.SelectedIndices[0];
+            if (selectedlvcount > -1)
+            {
+                displayOnComponents();
+            }
+            else
+            {
+                MessageBox.Show("Error when selecting data from the listview");
+            }
+        }
+
+        private void textSearch_MouseClick(object sender, MouseEventArgs e)
+        {
+            textSearch.Clear();
+            textSearch.ForeColor = Color.Black;
+        }
+
+        // 6.13 Create a double click event on the Name TextBox to clear the TextBoxes, ComboBox and Radio button.
+        private void textName_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            clearEntries();
+        }
+        #endregion
 
         // 6.15 The Wiki application will save data when the form closes. 
-
 
         // 6.16 All code is required to be adequately commented. Map the programming criteria and features to your 
         // code/methods by adding comments above the method signatures. Ensure your code is compliant with the 

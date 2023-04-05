@@ -68,8 +68,6 @@ namespace WikiApplication
             return definition;
         }
 
-
-        // needs fixing
         public int CompareTo(Information other)
         {
             if (other == null)

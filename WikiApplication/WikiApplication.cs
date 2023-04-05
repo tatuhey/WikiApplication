@@ -64,15 +64,14 @@ namespace WikiApplication
                 if (result == DialogResult.Yes)
                 {
                     delete(selectedlvcount);
-                    clearEntries();
                 }
                 else
                 {
-                    clearEntries();
                     selectedlvcount = -1;
                 }
 
             }
+            clearEntries();
         }
 
         #endregion
@@ -111,10 +110,16 @@ namespace WikiApplication
         // and returns a Boolean after checking for duplicates. Use the built in List<T> method “Exists” to answer this requirement.
         private bool validName(string name)
         {
-            if (Wiki.Exists(dup => dup.getName() == name))
-                return false;
+            if (string.IsNullOrEmpty(name))
+            {
+                if (Wiki.Exists(dup => dup.getName() == name))
+                    return false;
+                else
+                    return true;
+            }
             else
-                return true;
+                return false;
+
         }
 
         // 6.6 Create two methods to highlight and return the values from the Radio button GroupBox.

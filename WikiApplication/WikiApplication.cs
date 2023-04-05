@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
+using System.Reflection;
 
 namespace WikiApplication
 {
@@ -145,12 +146,15 @@ namespace WikiApplication
         // has the option to backout of this action by using a dialog box. Display an updated version of the sorted list at the end of this process.
         private void delete(int row)
         {
-            foreach (int column in dataListView.Columns)
-            {
-                Wiki.RemoveAt(row);
-            }
+            Wiki.RemoveAt(row);
+            dataListView.Items.RemoveAt(row);
         }
 
+        // prevent keypress in combobox
+        private void cbCategory_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = true;
+        }
 
 
         #endregion
@@ -181,6 +185,29 @@ namespace WikiApplication
 
         // 6.11 Create a ListView event so a user can select a Data Structure Name from the list of Names and the 
         // associated information will be displayed in the related text boxes combo box and radio button.
+
+        private void dataListView_MouseClick(object sender, MouseEventArgs e)
+        {
+            selectedlvcount = dataListView.SelectedIndices[0];
+            if (selectedlvcount > -1)
+            {
+                Information item = Wiki[selectedlvcount];
+                string namewhenselect = item.getName();
+                string definitionwhenselect = item.getDefinition();
+                textName.Text = namewhenselect;
+                textDefinition.Text = definitionwhenselect;
+
+                string categorywhenselect = item.getCategory();
+                int categoryInt = int.Parse(categorywhenselect);
+                cbCategory.SelectedIndex = categoryInt;
+            }
+            else
+            {
+                MessageBox.Show("Error when selecting data from the listview");
+            }
+        }
+
+
 
 
 

@@ -45,7 +45,7 @@ namespace WikiApplication
 
         public string getCategory()
         {
-            return category;
+            return category.ToString();
         }
 
         public void setStructure(string newStructure)

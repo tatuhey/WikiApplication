@@ -186,6 +186,7 @@
             this.dataListView.TabIndex = 19;
             this.dataListView.UseCompatibleStateImageBehavior = false;
             this.dataListView.View = System.Windows.Forms.View.Details;
+            this.dataListView.MouseClick += new System.Windows.Forms.MouseEventHandler(this.dataListView_MouseClick);
             // 
             // dataName
             // 
@@ -204,6 +205,7 @@
             this.cbCategory.Name = "cbCategory";
             this.cbCategory.Size = new System.Drawing.Size(348, 21);
             this.cbCategory.TabIndex = 37;
+            this.cbCategory.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.cbCategory_KeyPress);
             // 
             // gbStructure
             // 

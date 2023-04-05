@@ -35,10 +35,16 @@ namespace WikiApplication
             if (valid)
             {
                 Information newInformation = new Information();
+
                 newInformation.setName(textName.Text);
+
                 newInformation.setCategory(cbCategory.SelectedIndex);
-                newInformation.setStructure(gbStructure.Text);
+
+                string structureValue = radioButtonString(gbStructure);
+                newInformation.setStructure(structureValue);
+
                 newInformation.setDefinition(textDefinition.Text);
+
                 Wiki.Add(newInformation);
             }
             else
@@ -128,19 +134,33 @@ namespace WikiApplication
 
             return null;
         }
-
-        private bool radioButtonHighlight(GroupBox groupBox, int index)
+        private bool radioButtonHighlight(GroupBox groupBox, string value)
         {
-            if (index < 0 || index >= groupBox.Controls.Count)
+            foreach (RadioButton radio in groupBox.Controls.OfType<RadioButton>())
             {
-                return false;
+                if (radio.Text == value)
+                {
+                    radio.Checked = true;
+                    return true;
+                }
             }
 
-            RadioButton radioButton = groupBox.Controls.OfType<RadioButton>().ElementAt(index);
-            radioButton.Checked = true;
-
-            return true;
+            return false;
         }
+
+        //private bool radioButtonHighlight(GroupBox groupBox, int index)
+        //{
+        //    if (index < 0 || index >= groupBox.Controls.Count)
+        //    {
+        //        return false;
+        //    }
+
+        //    RadioButton radioButton = groupBox.Controls.OfType<RadioButton>().ElementAt(index);
+        //    radioButton.Checked = true;
+
+        //    return true;
+        //}
+
 
         // 6.7 Create a button method that will delete the currently selected record in the ListView. Ensure the user 
         // has the option to backout of this action by using a dialog box. Display an updated version of the sorted list at the end of this process.
@@ -203,6 +223,7 @@ namespace WikiApplication
                 cbCategory.Update();
 
                 string structurewhenselect = item.getStructure();
+                radioButtonHighlight(gbStructure, structurewhenselect);
                 
             }
             else

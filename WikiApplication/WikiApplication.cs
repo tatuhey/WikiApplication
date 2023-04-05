@@ -211,6 +211,28 @@ namespace WikiApplication
         // If the record is found the associated details will populate the appropriate input controls and highlight the name in the ListView.
         // At the end of the search process the search input TextBox must be cleared.
 
+        private void buttonSearch_Click(object sender, EventArgs e)
+        {
+            string searchName = textSearch.Text;
+
+            int index = Wiki.BinarySearch(new Information(searchName, "", "", ""));
+
+            if (index >= 0)
+            {
+                Information search = Wiki[index];
+                dataListView.Items[index].Selected = true;
+                dataListView.Select();
+
+                textName.Text = search.getName();
+                cbCategory.Text = search.getCategory();
+                textDefinition.Text = search.getDefinition();
+                radioButtonHighlight(gbStructure, search.getStructure());
+
+            }
+            textSearch.Text = string.Empty;
+            
+        }
+
 
         // 6.11 Create a ListView event so a user can select a Data Structure Name from the list of Names and the 
         // associated information will be displayed in the related text boxes combo box and radio button.
@@ -221,17 +243,11 @@ namespace WikiApplication
             if (selectedlvcount > -1)
             {
                 Information item = Wiki[selectedlvcount];
-                string namewhenselect = item.getName();
-                string definitionwhenselect = item.getDefinition();
-                textName.Text = namewhenselect;
-                textDefinition.Text = definitionwhenselect;
-
-                string categorywhenselect = item.getCategory();
-                cbCategory.Text = categorywhenselect;
-
-                string structurewhenselect = item.getStructure();
+                textName.Text = item.getName();
+                textDefinition.Text = item.getDefinition();
+                cbCategory.Text= item.getCategory();
                 // Use this if passing string
-                radioButtonHighlight(gbStructure, structurewhenselect);
+                radioButtonHighlight(gbStructure, item.getStructure());
                 // Use this if passing int
                 //int structureInt;
                 //int.TryParse(structurewhenselect, out structureInt);
@@ -259,6 +275,8 @@ namespace WikiApplication
                 }
             }
         }
+
+
 
         // 6.13 Create a double click event on the Name TextBox to clear the TextBboxes, ComboBox and Radio button.
 

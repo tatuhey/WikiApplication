@@ -40,12 +40,12 @@ namespace WikiApplication
 
         public void setCategory(int newCategory)
         {
-            category = newCategory.ToString();
+            category = newCategory.ToString();          
         }
 
         public string getCategory()
         {
-            return category.ToString();
+            return category;
         }
 
         public void setStructure(string newStructure)

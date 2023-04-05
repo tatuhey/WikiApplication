@@ -200,6 +200,7 @@ namespace WikiApplication
                 string categorywhenselect = item.getCategory();
                 int categoryInt = int.Parse(categorywhenselect);
                 cbCategory.SelectedIndex = categoryInt;
+                cbCategory.Update();
             }
             else
             {

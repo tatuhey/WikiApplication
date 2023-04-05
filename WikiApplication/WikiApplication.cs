@@ -120,9 +120,9 @@ namespace WikiApplication
         {
             foreach (RadioButton radio in groupBox.Controls.OfType<RadioButton>())
             {
-                if (radBtnLinear.Checked || radBtnNonlinear.Checked)
+                if (radio.Checked)
                 {
-                    return radio.ToString();
+                    return radio.Text;
                 }
             }
 
@@ -201,6 +201,9 @@ namespace WikiApplication
                 int categoryInt = int.Parse(categorywhenselect);
                 cbCategory.SelectedIndex = categoryInt;
                 cbCategory.Update();
+
+                string structurewhenselect = item.getStructure();
+                
             }
             else
             {

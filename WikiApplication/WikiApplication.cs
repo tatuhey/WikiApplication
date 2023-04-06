@@ -344,7 +344,7 @@ namespace WikiApplication
         }
         #endregion
 
-        #region Mouseclick
+        #region Mouseclicks
         // prevent keypress in combobox
         private void cbCategory_KeyPress(object sender, KeyPressEventArgs e)
         {
@@ -384,7 +384,9 @@ namespace WikiApplication
 
         #endregion
 
+        #region Status strips
 
+        #endregion
 
         // 6.16 All code is required to be adequately commented. Map the programming criteria and features to your 
         // code/methods by adding comments above the method signatures. Ensure your code is compliant with the 

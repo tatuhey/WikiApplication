@@ -293,6 +293,7 @@
             this.Controls.Add(this.dataListView);
             this.Name = "wikiApplication";
             this.Text = "Wiki Application";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.wikiApplication_FormClosed);
             this.gbStructure.ResumeLayout(false);
             this.gbStructure.PerformLayout();
             this.statusStrip.ResumeLayout(false);

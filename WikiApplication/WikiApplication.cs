@@ -204,6 +204,75 @@ namespace WikiApplication
                 }
             }
         }
+
+        private void save()
+        {
+            string defaultDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            saveFD.InitialDirectory = defaultDirectory;
+            saveFD.FileName = "definitions.dat";
+            if (saveFD.ShowDialog() == DialogResult.OK)
+            {
+                BinaryWriter bw;
+                try
+                {
+                    bw = new BinaryWriter(new FileStream("definitions.dat", FileMode.Create));
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message + "\nCannot save to file");
+                    return;
+                }
+                try
+                {
+                    foreach (var save in Wiki)
+                    {
+                        bw.Write(save.getName());
+                        bw.Write(save.getCategory());
+                        bw.Write(save.getStructure());
+                        bw.Write(save.getDefinition());
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message + "\nCannot write to file");
+                }
+                bw.Close();
+            }
+        }
+
+        private void load()
+        {
+            string defaultDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            openFD.InitialDirectory = defaultDirectory;
+            openFD.FileName = "definitions.dat";
+            if (openFD.ShowDialog() == DialogResult.OK)
+            {
+                BinaryReader br;
+                int index = 0;
+                dataListView.Items.Clear();
+                try
+                {
+                    br = new BinaryReader(new FileStream(openFD.FileName, FileMode.Open));
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message + "\nCannot open file for reading");
+                    return;
+                }
+                while (br.BaseStream.Position != br.BaseStream.Length)
+                {
+                    string name = br.ReadString();
+                    string category = br.ReadString();
+                    string structure = br.ReadString();
+                    string definition = br.ReadString();
+                    Information open = new Information(name, category, structure, definition);
+                    Wiki.Add(open);
+                    index++;
+                }
+                br.Close();
+                displayInformation();
+            }
+        }
         #endregion
 
         #region Buttons
@@ -265,71 +334,13 @@ namespace WikiApplication
         // rename a saved file. All Wiki data is stored/retrieved using a binary reader/writer file format.
         private void buttonLoad_Click(object sender, EventArgs e)
         {
-            string defaultDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            openFD.InitialDirectory = defaultDirectory;
-            openFD.FileName = "definitions.dat";
-            if (openFD.ShowDialog() == DialogResult.OK)
-            {
-                BinaryReader br;
-                int index = 0;
-                dataListView.Items.Clear();
-                try
-                {
-                    br = new BinaryReader(new FileStream(openFD.FileName, FileMode.Open));
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message + "\nCannot open file for reading");
-                    return;
-                }
-                while (br.BaseStream.Position != br.BaseStream.Length)
-                {
-                    string name = br.ReadString();
-                    string category = br.ReadString();
-                    string structure = br.ReadString();
-                    string definition = br.ReadString();
-                    Information open = new Information(name, category, structure, definition);
-                    Wiki.Add(open);
-                    index++;
-                }
-                br.Close();
-                displayInformation();
-            }
+            load();
         }
+
 
         private void buttonSave_Click(object sender, EventArgs e)
         {
-            string defaultDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            saveFD.InitialDirectory = defaultDirectory;
-            saveFD.FileName = "definitions.dat";
-            if (saveFD.ShowDialog() == DialogResult.OK)
-            {
-                BinaryWriter bw;
-                try
-                {
-                    bw = new BinaryWriter(new FileStream("definitions.dat", FileMode.Create));
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message + "\nCannot save to file");
-                    return;
-                }
-                try
-                {
-                    foreach (var save in Wiki)
-                    {
-                        bw.Write(save.getName());
-                        bw.Write(save.getCategory());
-                        bw.Write(save.getStructure());
-                        bw.Write(save.getDefinition());
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message + "\nCannot write to file");
-                }
-                bw.Close();
-            }
+            save();            
         }
         #endregion
 
@@ -364,9 +375,16 @@ namespace WikiApplication
         {
             clearEntries();
         }
-        #endregion
 
         // 6.15 The Wiki application will save data when the form closes. 
+        private void wikiApplication_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            save();
+        }
+
+        #endregion
+
+
 
         // 6.16 All code is required to be adequately commented. Map the programming criteria and features to your 
         // code/methods by adding comments above the method signatures. Ensure your code is compliant with the 

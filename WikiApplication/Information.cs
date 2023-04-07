@@ -18,6 +18,7 @@ namespace WikiApplication
         private string structure;
         private string definition;
 
+        // default constructor
         public Information() { }
 
         public Information(string newName, string newCategory, string newStructure, string newDefinition)

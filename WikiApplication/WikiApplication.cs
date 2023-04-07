@@ -18,6 +18,7 @@ namespace WikiApplication
         {
             InitializeComponent();
             fillComboBox();
+            ststReset();
         }
 
         int selectedlvcount = -1;
@@ -145,6 +146,8 @@ namespace WikiApplication
 
                 displayInformation();
             }
+            else
+                ststInvalid();
         }
 
         // 6.9 Create a single custom method that will sort and then display the Name and Category from the wiki information in the list.
@@ -195,6 +198,7 @@ namespace WikiApplication
             textName.Clear();
             cbCategory.Text = string.Empty;
             textDefinition.Clear();
+            dataListView.SelectedItems.Clear();
 
             foreach (Control control in gbStructure.Controls)
             {
@@ -279,6 +283,7 @@ namespace WikiApplication
 
         private void buttonAdd_Click(object sender, EventArgs e)
         {
+            ststReset();
             bool valid = validName(textName.Text);
             if (valid)
             {
@@ -286,7 +291,7 @@ namespace WikiApplication
             }
             else
             {
-                MessageBox.Show("repeat");
+                ststInvalid();
             }
             clearEntries();
             displayInformation();
@@ -295,12 +300,14 @@ namespace WikiApplication
 
         private void buttonDelete_Click(object sender, EventArgs e)
         {
+            ststReset();
             if (selectedlvcount > -1)
             {
                 DialogResult result = MessageBox.Show("Do you want to delete the selected entry?", "Delete", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
                 if (result == DialogResult.Yes)
                 {
                     delete(selectedlvcount);
+                    ststDelete();
                 }                               
                 selectedlvcount = -1;                
             }
@@ -309,24 +316,29 @@ namespace WikiApplication
 
         private void buttonEdit_Click(object sender, EventArgs e)
         {
+            ststReset();
             if (selectedlvcount > -1)
             {
                 edit();
+                ststEdit();
             }
             else
-                MessageBox.Show("Cannot edit unselected list");
+                ststInvalid();
         }
 
         private void buttonSearch_Click(object sender, EventArgs e)
         {
+            ststReset();
             string searchName = textSearch.Text;
-
+            searchName = new System.Globalization.CultureInfo("en-US").TextInfo.ToTitleCase(searchName);
             int index = Wiki.BinarySearch(new Information(searchName, "", "", ""));
-
             if (index >= 0)
             {
                 search(index);
+                ststFound();
             }
+            else
+                ststNotFound();
             textSearch.Text = string.Empty;
         }
 
@@ -336,7 +348,6 @@ namespace WikiApplication
         {
             load();
         }
-
 
         private void buttonSave_Click(object sender, EventArgs e)
         {
@@ -382,9 +393,50 @@ namespace WikiApplication
             save();
         }
 
+        private void wikiApplication_MouseClick(object sender, MouseEventArgs e)
+        {
+            dataListView.SelectedItems.Clear();
+            ststReset();
+        }
+
         #endregion
 
         #region Status strips
+        private void ststFound()
+        {
+            stStripLabel.Text = "Entry is found";
+            stStripLabel.BackColor = Color.LightGreen;
+        }
+
+        private void ststNotFound()
+        {
+            stStripLabel.Text = "Entry is not found";
+            stStripLabel.BackColor = Color.Yellow;
+        }
+
+        private void ststDelete()
+        {
+            stStripLabel.Text = "Entry was successfully deleted";
+            stStripLabel.BackColor = Color.Tomato;
+        }
+
+        private void ststEdit()
+        {
+            stStripLabel.Text = "Entry was successfully edited";
+            stStripLabel.BackColor = Color.YellowGreen;
+        }
+
+        private void ststInvalid()
+        {
+            stStripLabel.Text = "Entry is invalid";
+            stStripLabel.BackColor = Color.Red;
+        }
+
+        private void ststReset()
+        {
+            stStripLabel.Text = string.Empty;
+            stStripLabel.BackColor = Color.Empty;
+        }
 
         #endregion
 

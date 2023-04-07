@@ -294,6 +294,7 @@
             this.Name = "wikiApplication";
             this.Text = "Wiki Application";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.wikiApplication_FormClosed);
+            this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.wikiApplication_MouseClick);
             this.gbStructure.ResumeLayout(false);
             this.gbStructure.PerformLayout();
             this.statusStrip.ResumeLayout(false);

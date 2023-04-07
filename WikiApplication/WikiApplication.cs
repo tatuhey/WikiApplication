@@ -215,7 +215,7 @@ namespace WikiApplication
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message + "\nCannot save to file");
+                    MessageBox.Show(ex.Message + "\nCannot save to file", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
                 try
@@ -230,7 +230,7 @@ namespace WikiApplication
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message + "\nCannot write to file");
+                    MessageBox.Show(ex.Message + "\nCannot write to file", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 bw.Close();
             }
@@ -252,7 +252,7 @@ namespace WikiApplication
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message + "\nCannot open file for reading");
+                    MessageBox.Show(ex.Message + "\nCannot open file for reading", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
                 while (br.BaseStream.Position != br.BaseStream.Length)
@@ -293,7 +293,7 @@ namespace WikiApplication
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error when adding data to the listview.\n{ex.Message}");
+                MessageBox.Show($"Error when adding data to the listview.\n{ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -313,7 +313,7 @@ namespace WikiApplication
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error when deleting data from the listview.\n{ex.Message}");
+                MessageBox.Show($"Error when deleting data from the listview.\n{ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -327,7 +327,7 @@ namespace WikiApplication
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error when editting data from the listview.\n{ex.Message}");
+                MessageBox.Show($"Error when editting data from the listview.\n{ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -350,7 +350,7 @@ namespace WikiApplication
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error when searching data from the listview.\n{ex.Message}");
+                MessageBox.Show($"Error when searching data from the listview.\n{ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -364,7 +364,7 @@ namespace WikiApplication
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error when loading data to the listview.\n{ex.Message}");
+                MessageBox.Show($"Error when loading data to the listview.\n{ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -376,7 +376,7 @@ namespace WikiApplication
             }
             catch (Exception ex )
             {
-                MessageBox.Show($"Error when saving data from the listview.\n{ex.Message}");
+                MessageBox.Show($"Error when saving data from the listview.\n{ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
         #endregion
@@ -397,7 +397,7 @@ namespace WikiApplication
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error when selecting data from the listview. {ex.Message}");
+                MessageBox.Show($"Error when selecting data from the listview. {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 

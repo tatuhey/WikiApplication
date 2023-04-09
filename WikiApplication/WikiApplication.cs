@@ -33,13 +33,20 @@ namespace WikiApplication
         // the Category, Radio group for the Structure and Multiline TextBox for the Definition.
         private void add()
         {
-            Information newInformation = new Information();
-            newInformation.setName(textName.Text);
-            newInformation.setCategory(cbCategory.SelectedItem.ToString());
-            string structureValue = radioButtonString(gbStructure);
-            newInformation.setStructure(structureValue);
-            newInformation.setDefinition(textDefinition.Text);
-            Wiki.Add(newInformation);
+            try
+            {
+                Information newInformation = new Information();
+                newInformation.setName(textName.Text);
+                newInformation.setCategory(cbCategory.SelectedItem.ToString());
+                string structureValue = radioButtonString(gbStructure);
+                newInformation.setStructure(structureValue);
+                newInformation.setDefinition(textDefinition.Text);
+                Wiki.Add(newInformation);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error when adding data to the listview.\n{ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         // 6.4 Create a custom method to populate the ComboBox when the Form Load method is called. The six categories must be read from a simple text file.

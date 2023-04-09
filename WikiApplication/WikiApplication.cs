@@ -136,19 +136,25 @@ namespace WikiApplication
         // Display an updated version of the sorted list at the end of this process.
         private void edit(int index)
         {
-            bool valid = validName(textName.Text);
-            if (valid)
+            if (!string.IsNullOrEmpty(textName.Text))
             {
-                Information editItem = Wiki[index];
-                editItem.setName(textName.Text);
-                editItem.setDefinition(textDefinition.Text);
-                editItem.setCategory(cbCategory.Text);
-                editItem.setStructure(radioButtonString(gbStructure).ToString());
-                displayInformation();
-                ststEdit();
+                bool valid = validComboBox();
+                if (valid)
+                {
+                    Information editItem = Wiki[index];
+                    editItem.setName(textName.Text);
+                    editItem.setDefinition(textDefinition.Text);
+                    editItem.setCategory(cbCategory.Text);
+                    editItem.setStructure(radioButtonString(gbStructure).ToString());
+                    displayInformation();
+                    ststEdit();
+                }
+                else
+                    ststInvalid();
             }
             else
                 ststInvalid();
+            
         }
 
         // 6.9 Create a single custom method that will sort and then display the Name and Category from the wiki information in the list.
@@ -276,6 +282,15 @@ namespace WikiApplication
                 displayInformation();
             }
         }
+
+        //if
+        private bool validComboBox()
+        {
+            if (cbCategory.SelectedIndex != -1)
+                return true;
+            else
+                return false;
+        }
         #endregion
 
         #region Buttons
@@ -288,12 +303,14 @@ namespace WikiApplication
                 bool valid = validName(textName.Text);
                 if (valid)
                 {
-                    add();
+                    bool validcb = validComboBox();
+                    if (validcb)
+                        add();
+                    else
+                        ststInvalid();
                 }
                 else
-                {
                     ststInvalid();
-                }
                 clearEntries();
                 displayInformation();
                 textName.Focus();

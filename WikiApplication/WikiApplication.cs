@@ -68,7 +68,7 @@ namespace WikiApplication
             if (!string.IsNullOrEmpty(name))
             {
                 // if name is duplicate, then not valid as well
-                if (Wiki.Exists(dup => dup.getName() == name))
+                if (Wiki.Exists(dup => dup.getName().ToLower() == name.ToLower()))
                     return false;
                 else
                     return true;

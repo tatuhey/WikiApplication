@@ -367,6 +367,7 @@ namespace WikiApplication
         {
             try
             {
+                Wiki.Clear();
                 load();
             }
             catch (Exception ex)

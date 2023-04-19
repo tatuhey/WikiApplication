@@ -145,7 +145,8 @@ namespace WikiApplication
                     editItem.setName(textName.Text);
                     editItem.setDefinition(textDefinition.Text);
                     editItem.setCategory(cbCategory.Text);
-                    editItem.setStructure(radioButtonString(gbStructure).ToString());
+                    string editStructure = radioButtonString(gbStructure);
+                    editItem.setStructure(editStructure);
                     displayInformation();
                     ststEdit();
                 }
@@ -204,7 +205,7 @@ namespace WikiApplication
             textName.Clear();
             cbCategory.Text = string.Empty;
             textDefinition.Clear();
-            dataListView.SelectedItems.Clear();
+            //dataListView.SelectedItems.Clear();
             foreach (Control control in gbStructure.Controls)
             {
                 if (control is RadioButton radioButton)
@@ -415,9 +416,10 @@ namespace WikiApplication
 
         private void dataListView_MouseClick(object sender, MouseEventArgs e)
         {
+            int index = dataListView.SelectedIndices[0];
+            clearEntries();
             try
             {
-                int index = dataListView.SelectedIndices[0];
                 displayOnComponents(index);
             }
             catch (Exception ex)

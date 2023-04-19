@@ -127,8 +127,8 @@ namespace WikiApplication
         // has the option to backout of this action by using a dialog box. Display an updated version of the sorted list at the end of this process.
         private void delete(int row)
         {
-            Wiki.RemoveAt(row);
-            dataListView.Items.RemoveAt(row);
+                Wiki.RemoveAt(row);
+                dataListView.Items.RemoveAt(row);
         }
 
         // 6.8 Create a button method that will save the edited record of the currently selected item in the ListView.
@@ -284,7 +284,6 @@ namespace WikiApplication
             }
         }
 
-        //if
         private bool validComboBox()
         {
             if (cbCategory.SelectedIndex != -1)
@@ -327,14 +326,19 @@ namespace WikiApplication
             ststReset();
             try
             {
-                int index = dataListView.SelectedIndices[0];
-                DialogResult result = MessageBox.Show("Do you want to delete the selected entry?", "Delete", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-                if (result == DialogResult.Yes)
+                if (dataListView.SelectedIndices.Count > 0)
                 {
-                    delete(index);
-                    ststDelete();
+                    int index = dataListView.SelectedIndices[0];
+                    DialogResult result = MessageBox.Show("Do you want to delete the selected entry?", "Delete", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                    if (result == DialogResult.Yes)
+                    {
+                        delete(index);
+                        ststDelete();
+                    }
+                    clearEntries();
                 }
-                clearEntries();
+                else
+                    ststInvalid();
             }
             catch (Exception ex)
             {
@@ -347,8 +351,13 @@ namespace WikiApplication
             ststReset();
             try
             {
-                int index = dataListView.SelectedIndices[0];
-                edit(index);
+                if (dataListView.SelectedIndices.Count > 0 )
+                {
+                    int index = dataListView.SelectedIndices[0];
+                    edit(index);
+                }
+                else
+                    ststInvalid();
             }
             catch (Exception ex)
             {

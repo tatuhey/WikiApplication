@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
 using System.Reflection;
+using System.Diagnostics;
 
 // Raihan Khalil Abdillah - 30065695
 // Wiki Application | 22 March 2023 - 07 April 2023
@@ -24,6 +25,8 @@ namespace WikiApplication
             fillComboBox();
             ststReset();
         }
+        static Stream myTraceTestFile = File.Create("Testfile.txt");
+        TextWriterTraceListener myTraceListener = new TextWriterTraceListener(myTraceTestFile);
 
         // 6.2 Create a global List<T> of type Information called Wiki.
         List<Information> Wiki = new List<Information>();
@@ -64,17 +67,28 @@ namespace WikiApplication
         // and returns a Boolean after checking for duplicates. Use the built in List<T> method “Exists” to answer this requirement.
         private bool validName(string name)
         {
+            Trace.Listeners.Add(myTraceListener);
+            Trace.WriteLine("private bool validName(string name)");
             // if name is empty, then not valid
             if (!string.IsNullOrEmpty(name))
             {
                 // if name is duplicate, then not valid as well
                 if (Wiki.Exists(dup => dup.getName().ToLower() == name.ToLower()))
+                {
+                    Trace.WriteLine("duplicate name");
                     return false;
+                }
                 else
+                {
+                    Trace.WriteLine("not duplicate name");
                     return true;
+                }
             }
             else
+            {
+                Trace.WriteLine("Name is empty");
                 return false;
+            }
 
         }
 
@@ -127,8 +141,11 @@ namespace WikiApplication
         // has the option to backout of this action by using a dialog box. Display an updated version of the sorted list at the end of this process.
         private void delete(int row)
         {
-                Wiki.RemoveAt(row);
-                dataListView.Items.RemoveAt(row);
+            Trace.Listeners.Add(myTraceListener);
+            Trace.WriteLine("private void delete(int row)");
+            Trace.WriteLine($"Line removed at {row}");
+            Wiki.RemoveAt(row);
+            dataListView.Items.RemoveAt(row);
         }
 
         // 6.8 Create a button method that will save the edited record of the currently selected item in the ListView.
@@ -136,11 +153,14 @@ namespace WikiApplication
         // Display an updated version of the sorted list at the end of this process.
         private void edit(int index)
         {
+            Trace.Listeners.Add(myTraceListener);
+            Trace.WriteLine("private void edit(int index)");
             if (!string.IsNullOrEmpty(textName.Text))
             {
                 bool valid = validComboBox();
                 if (valid)
                 {
+                    Trace.WriteLine($"bool value is {valid}");
                     Information editItem = Wiki[index];
                     editItem.setName(textName.Text);
                     editItem.setDefinition(textDefinition.Text);
@@ -151,9 +171,13 @@ namespace WikiApplication
                     ststEdit();
                 }
                 else
+                {
+                    Trace.WriteLine($"bool value is {valid}");
                     ststInvalid();
+                }
             }
             else
+                Trace.WriteLine("Name is empty");
                 ststInvalid();
             
         }
@@ -453,6 +477,7 @@ namespace WikiApplication
         private void wikiApplication_FormClosed(object sender, FormClosedEventArgs e)
         {
             save();
+            Trace.Close();
         }
 
         private void wikiApplication_MouseClick(object sender, MouseEventArgs e)
